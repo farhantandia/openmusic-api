@@ -37,20 +37,7 @@ class PlaylistsService {
       throw new ForbiddenError('Anda tidak berhak mengakses');
     }
   }
-  async verifyPlaylistAccess(playlistId, userId) {
-    try {
-      await this.verifyPlaylistOwner(playlistId, userId);
-    } catch (error) {
-      if (error instanceof NotFoundError) {
-        throw error;
-      }
-      try {
-        await this._collaborationsService.verifyCollaborator(playlistId, userId);
-      } catch {
-        throw error;
-      }
-    }
-  }
+
   async verifyCollabPlaylist(playlistId, userId) {
     const queryOwner = {
       text: 'SELECT * FROM playlists WHERE id = $1',

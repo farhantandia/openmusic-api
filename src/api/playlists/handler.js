@@ -69,8 +69,7 @@ class PlaylistsHandler {
       const { playlistId } = request.params;
       const { songId } = request.payload;
       const { id: owner } = request.auth.credentials;
-      // await this._service.verifyCollabPlaylist(playlistId, owner);
-      await this._service.verifyPlaylistAccess(playlistId, owner);
+      await this._service.verifyCollabPlaylist(playlistId, owner);
       await this._service.addSongToPlaylist({ playlistId, songId });
       return h.response({
         status: 'success',
@@ -85,9 +84,7 @@ class PlaylistsHandler {
     try {
       const { playlistId } = request.params;
       const { id: owner } = request.auth.credentials;
-      // await this._service.verifyCollabPlaylist(playlistId, owner);
-      
-      await this._service.verifyPlaylistAccess(playlistId, owner);
+      await this._service.verifyCollabPlaylist(playlistId, owner);
       const songs = await this._service.getSongInPlaylist(playlistId);
       return h.response({
         status: 'success',
@@ -105,8 +102,7 @@ class PlaylistsHandler {
       const { playlistId } = request.params;
       const { songId } = request.payload;
       const { id: owner } = request.auth.credentials;
-      // await this._service.verifyCollabPlaylist(playlistId, owner);
-      await this._service.verifyPlaylistAccess(playlistId, owner);
+      await this._service.verifyCollabPlaylist(playlistId, owner);
       await this._service.deleteSongInPlaylist({ playlistId, songId });
       return h.response({
         status: 'success',
