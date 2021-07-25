@@ -24,27 +24,23 @@ const collaboration = require('./api/collaboration');
 const CollaborationService = require('./services/postgres/CollaborationsService');
 const CollaborationValidator = require('./validator/collaboration');
 
-
-// exports
 const _exports = require('./api/exports');
 const ProducerService = require('./services/rabbitmq/ProducerService');
 const ExportsValidator = require('./validator/exports');
 
-// uploads
 const uploads = require('./api/uploads');
 const StorageService = require('./services/storage/StorageService');
 const UploadsValidator = require('./validator/uploads');
 
-// cache
 const CacheService = require('./services/redis/CacheService');
 
 const init = async () => {
   const cacheService = new CacheService();
-  const songsService = new SongsService();
+  const songsService = new SongsService(cacheService);
   const userService = new UserService();
   const authService = new AuthService();
-  const collaborationService = new CollaborationService(cacheService);
-  const playlistService = new PlaylistService(collaborationService,cacheService);
+  const collaborationService = new CollaborationService();
+  const playlistService = new PlaylistService(cacheService);
   const storageService = new StorageService(path.resolve(__dirname, 'api/uploads/file/images'));
 
 

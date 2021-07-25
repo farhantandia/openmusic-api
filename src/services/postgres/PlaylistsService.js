@@ -6,8 +6,10 @@ const ForbiddenError = require('../../exceptions/ForbiddenError');
 const { mapDBToSong, mapDBplaylistsToModel } = require('../../utils');
 
 class PlaylistsService {
-  constructor() {
+  constructor(cacheService) {
     this._pool = new Pool();
+    
+    this._cacheService = cacheService;
   }
 
   async addPlaylist({ name, owner }) {
@@ -98,17 +100,26 @@ class PlaylistsService {
     if (!result.rows[0].id) {
       throw new InvariantError('Lagu gagal ditambahkan ke playlist');
     }
+    
+    await this._cacheService.delete(`songs:${playlistId}`);
   }
 
   async getSongInPlaylist(playlistId) {
-    const query = {
-      text: 'SELECT playlists_songs.song_id AS id,songs.title,songs.performer FROM playlists_songs JOIN songs ON playlists_songs.song_id = songs.id WHERE playlists_songs.playlist_id = $1',
-      values: [playlistId],
-    };
-    const result = await this._pool.query(query);
-    return result.rows.map(mapDBToSong);
-  }
+    try {
+      const result = await this._cacheService.get(`songs:${playlistId}`);
+      return JSON.parse(result);
+    } catch {
+      const query = {
+        text: 'SELECT playlists_songs.song_id AS id,songs.title,songs.performer FROM playlists_songs JOIN songs ON playlists_songs.song_id = songs.id WHERE playlists_songs.playlist_id = $1',
+        values: [playlistId],
+      };
+      const result = await this._pool.query(query);
+      const mapped = result.rows.map(mapDBToSong);
 
+      await this._cacheService.set(`songs:${playlistId}`, JSON.stringify(mapped));
+      return mapped;
+    }
+  }
   async deleteSongInPlaylist({ playlistId, songId }) {
     const query = {
       text: 'DELETE FROM playlists_songs WHERE playlist_id = $1 AND song_id = $2 RETURNING id',
@@ -118,6 +129,8 @@ class PlaylistsService {
     if (!result.rowCount) {
       throw new InvariantError('Gagal menghapus lagu dari playlist');
     }
+    
+    await this._cacheService.delete(`songs:${playlistId}`);
   }
 }
 module.exports = PlaylistsService;

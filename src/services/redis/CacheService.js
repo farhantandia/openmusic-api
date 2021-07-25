@@ -1,3 +1,4 @@
+
 const redis = require('redis');
 
 class CacheService {
@@ -17,7 +18,6 @@ class CacheService {
         if (error) {
           return reject(error);
         }
-
         return resolve(ok);
       });
     });
@@ -29,11 +29,9 @@ class CacheService {
         if (error) {
           return reject(error);
         }
-
         if (reply === null) {
           return reject(new Error('Cache tidak ditemukan'));
         }
-
         return resolve(reply.toString());
       });
     });
@@ -45,11 +43,9 @@ class CacheService {
         if (error) {
           return reject(error);
         }
-
         return resolve(count);
       });
     });
   }
 }
-
 module.exports = CacheService;
