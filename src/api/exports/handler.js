@@ -20,7 +20,7 @@ class ExportsHandler {
         playlistId,
         targetEmail: request.payload.targetEmail,
       };
-      await this._producerService.sendMessage('export:music', JSON.stringify(message));
+      await this._producerService.sendMessage('export:song', JSON.stringify(message));
       return h.response({
         status: 'success',
         message: 'Permintaan Anda sedang kami proses',
