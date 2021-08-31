@@ -1,5 +1,5 @@
 # Open Music API
-This repository contain an open music player application called OpenMusic. As the name implies, this app provides free licensed music for everyone.
+This repository contains an open music player application called OpenMusic. As the name implies, this app provides free licensed music for everyone.
 This application is developed gradually so that later it has features such as adding songs, creating playlists, adding songs to playlists, to sharing playlists with other users.
 
 ## Motivation
