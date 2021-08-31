@@ -7,7 +7,7 @@ This is a project learning record for Backend fundamental final submission at [D
 
 ## Features
 - Separate business logic via Hapi Plugin.
-- implementing Joi as a data validator to ensure the data submitted by the user is valid.
+- Implementing Joi as a data validator to ensure the data submitted by the user is valid.
 - Using PostgreSQL on a Node.js project as Database system and database normalization.
 - Implementing Authentication and Authorization.
 - Implementing Message Broker to Back-End Projects.
